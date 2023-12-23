@@ -24,11 +24,19 @@ const START_SERVER = () => {
   app.use('/v1', route_v1)
   app.use(errorHandlingMiddleware)
 
-  app.listen(port, hostname, () => {
-    console.log(
-      `Hello MinhDuc, I am running at http://${hostname}:${port}`
-    )
-  })
+  if (env.BUILD_MODE === 'production') {
+    app.listen(process.env.PORT, () => {
+      console.log(
+        `Hello MinhDuc, I am running at port:${port}`
+      )
+    })
+  } else {
+    app.listen(port, hostname, () => {
+      console.log(
+        `Hello MinhDuc, I am running at http://${hostname}:${port}`
+      )
+    })
+  }
 
   exitHook(() => {
     console.log('Exit app!!!')
